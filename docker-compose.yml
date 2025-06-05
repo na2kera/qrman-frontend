@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80" # ホストの3000番ポートをコンテナの80番ポートにマッピング
+    container_name: qrman-frontend
+    restart: unless-stopped
+    volumes: # 開発時のホットリロードを有効にするための設定
+      - ./src:/app/src # srcディレクトリをマウント
+      - ./public:/app/public # publicディレクトリをマウント
+      # node_modules はコンテナ内のものを使用するため、上書きしないように注意
+      # vite.config.ts や tsconfig.json など、ビルド設定ファイルの変更はイメージの再ビルドが必要
