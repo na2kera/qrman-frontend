@@ -1,0 +1,127 @@
+# QRMan Frontend - Cursor Rules
+
+## 技術スタック
+- **Framework**: React 19.1.0 with TypeScript
+- **Build Tool**: Vite 6.3.5
+- **Linting**: ESLint with TypeScript ESLint
+- **Styling**: CSS（後にTailwind CSS追加予定）
+
+## アーキテクチャ構成
+
+本プロジェクトは**機能ベース（Feature-Based）アーキテクチャ**を採用しています。
+
+### ディレクトリ構造
+
+```
+src/
+├── app/                    # アプリケーションレベル設定
+│   ├── App.tsx            # メインアプリケーションコンポーネント
+│   ├── store.ts           # グローバル状態管理
+│   └── router.tsx         # ルーティング設定
+├── features/              # 機能別モジュール
+│   ├── auth/             # 認証機能
+│   │   ├── components/   # 認証関連コンポーネント
+│   │   ├── hooks/        # 認証関連カスタムフック
+│   │   ├── api/          # 認証API呼び出し
+│   │   └── types/        # 認証関連型定義
+│   ├── products/         # 商品管理機能
+│   └── users/            # ユーザー管理機能
+├── shared/               # 共通モジュール
+│   ├── api/             # API関連共通機能
+│   │   ├── client.ts    # APIクライアント設定
+│   │   ├── types.ts     # API共通型定義
+│   │   └── hooks/       # API関連フック（useQuery, useMutation）
+│   ├── components/      # 再利用可能コンポーネント
+│   │   ├── ui/          # UIコンポーネント（Button, Input, Modal等）
+│   │   └── layout/      # レイアウトコンポーネント
+│   ├── hooks/           # 共通カスタムフック
+│   ├── utils/           # ユーティリティ関数
+│   └── constants/       # 定数定義
+├── assets/              # 静的アセット
+├── types/               # グローバル型定義
+│   └── global.d.ts
+├── index.css            # グローバルスタイル
+├── main.tsx            # エントリーポイント
+└── vite-env.d.ts       # Vite型定義
+```
+
+## 開発ガイドライン
+
+### 1. 機能の追加
+- 新機能は `features/` 配下に専用ディレクトリを作成
+- 各機能ディレクトリは `components/`, `hooks/`, `api/`, `types/` の構造を維持
+- 機能間の依存は最小限に抑制
+
+### 2. コンポーネント作成
+- **UI コンポーネント**: `shared/components/ui/` に配置
+- **レイアウト コンポーネント**: `shared/components/layout/` に配置
+- **機能固有コンポーネント**: 各 `features/*/components/` に配置
+
+### 3. API 呼び出し
+- API クライアントは `shared/api/client.ts` を使用
+- 機能固有の API 呼び出しは `features/*/api/` に配置
+- 共通の API フック（useQuery, useMutation）は `shared/api/hooks/` を使用
+
+### 4. 型定義
+- **グローバル型**: `types/global.d.ts`
+- **API 共通型**: `shared/api/types.ts`
+- **機能固有型**: `features/*/types/`
+
+### 5. 命名規則
+- **ファイル名**: PascalCase（コンポーネント）、camelCase（その他）
+- **コンポーネント**: PascalCase
+- **フック**: `use` プレフィックス + PascalCase
+- **API 関数**: camelCase
+- **型**: PascalCase、Interface は `I` プレフィックス不要
+
+### 6. import 順序
+```typescript
+// 1. React & 外部ライブラリ
+import React from 'react';
+import { someLibrary } from 'some-library';
+
+// 2. 共通モジュール
+import { Button } from '@/shared/components/ui';
+import { useQuery } from '@/shared/api/hooks';
+
+// 3. 機能固有モジュール
+import { AuthForm } from '../components/AuthForm';
+import { useAuth } from '../hooks/useAuth';
+
+// 4. 型定義
+import type { User } from '../types';
+```
+
+## コーディング規約
+
+### 1. TypeScript
+- 厳格な型定義を使用
+- `any` 型の使用を避ける
+- 必要に応じて `unknown` 型を使用
+
+### 2. React
+- 関数コンポーネントを使用
+- カスタムフックで状態ロジックを分離
+- prop drill を避けるため適切な状態管理を使用
+
+### 3. エラーハンドリング
+- API エラーは共通のエラーハンドラーで処理
+- ユーザーフレンドリーなエラーメッセージを表示
+
+## 注意事項
+
+### 変更禁止事項
+- **技術スタックのバージョン**: 指定されたバージョンから変更禁止
+- **基本的なディレクトリ構造**: 機能ベース構造の変更禁止
+- **UI/UXデザイン**: レイアウト、色、フォント等の変更は事前承認必須
+
+### 重複防止
+- 新機能実装前に既存の類似機能をチェック
+- 共通処理は `shared/` ディレクトリに配置
+- 同名コンポーネント・関数の作成を避ける
+
+## 推奨事項
+- コンポーネントは単一責任の原則に従う
+- 再利用可能なロジックはカスタムフックに抽出
+- パフォーマンスを考慮した適切なメモ化の実装
+- アクセシビリティを考慮したコンポーネント設計 
