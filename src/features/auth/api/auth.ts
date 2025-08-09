@@ -20,6 +20,10 @@ export async function signup(
   return res as { user: User; token: string };
 }
 
-export async function fetchProtected(): Promise<any> {
-  return api.get("/api/v1/protected_resource");
+export async function fetchProtected(): Promise<{
+  message: string;
+  user: User;
+}> {
+  const res = await api.get("/api/v1/protected_resource");
+  return res as { message: string; user: User };
 }
