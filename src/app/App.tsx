@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import { authStore } from "./store";
 
 function App() {
   const [count, setCount] = useState(0);
+  useEffect(() => {
+    authStore.load();
+  }, []);
 
   return (
     <>
