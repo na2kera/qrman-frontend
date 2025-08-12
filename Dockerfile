@@ -21,8 +21,8 @@ FROM nginx:stable-alpine
 # ビルドステージで生成されたdistディレクトリをNginxの公開ディレクトリにコピー
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Nginxの設定ファイルをコピー (カスタム設定が必要な場合)
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Nginxの設定ファイルをコピー (SPA のルーティング対応)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # ポート80を公開
 EXPOSE 80
