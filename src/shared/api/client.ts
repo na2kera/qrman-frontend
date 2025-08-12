@@ -40,6 +40,7 @@ export async function request(
   init: RequestInit = {}
 ): Promise<unknown> {
   const headers = new Headers(init.headers);
+  if (!headers.has("Accept")) headers.set("Accept", "application/json");
   if (!headers.has("Content-Type") && init.body)
     headers.set("Content-Type", "application/json");
   if (authTokenInMemory)
