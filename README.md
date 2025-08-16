@@ -1,4 +1,4 @@
 ### 立ち上げ
 ``` 
-docker-compose up -d --build
+npm run dev:docker
 ```
