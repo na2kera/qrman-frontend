@@ -5,6 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:host": "vite --host",
+    "dev:docker": "docker run -d --rm --name qrman-frontend-dev -p 3000:3000 -v \"$PWD\":/app -w /app node:20-slim bash -lc 'npm install && npm run dev -- --host'",
+    "dev:docker:logs": "docker logs -f qrman-frontend-dev",
+    "dev:docker:down": "docker stop qrman-frontend-dev",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
